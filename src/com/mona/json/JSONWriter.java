@@ -58,7 +58,7 @@ public class JSONWriter {
     /**
      * The object/array stack.
      */
-    private final JSONObject stack[];
+    private final JSONObject[] stack;
     /**
      * The current mode. Values:
      * 'a' (array),

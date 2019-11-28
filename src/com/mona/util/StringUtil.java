@@ -1,6 +1,7 @@
 package com.mona.util;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
@@ -14,8 +15,8 @@ public class StringUtil {
         if (code.length() != 18) return false;
         int sum = 0;
         final char last = code.charAt(17);
-        final int id[] = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
-        final char constant[] = {'1', '0', 'x', '9', '8', '7', '6', '5', '4', '3',
+        final int[] id = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
+        final char[] constant = {'1', '0', 'x', '9', '8', '7', '6', '5', '4', '3',
                 '2'};
         for (int i = 0; i < 17; i++)
             sum += Integer.parseInt(String.valueOf(code.charAt(i))) * id[i];
@@ -210,7 +211,7 @@ public class StringUtil {
             return str;
         }
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
-        final ByteArrayInputStream in = new ByteArrayInputStream(str.getBytes("ISO-8859-1"));
+        final ByteArrayInputStream in = new ByteArrayInputStream(str.getBytes(StandardCharsets.ISO_8859_1));
         final GZIPInputStream gunzip = new GZIPInputStream(in);
         final byte[] buffer = new byte[256];
         int n;
@@ -324,7 +325,7 @@ public class StringUtil {
         final ByteArrayInputStream in = new ByteArrayInputStream(string.getBytes());
         final String com = StringUtil.compress(in);
         System.out.println("压缩-->" + com);
-        final ByteArrayInputStream in1 = new ByteArrayInputStream(com.getBytes("ISO-8859-1"));
+        final ByteArrayInputStream in1 = new ByteArrayInputStream(com.getBytes(StandardCharsets.ISO_8859_1));
         final String decom = StringUtil.decompress(in1);
         System.out.println("解压-->" + decom);
     }

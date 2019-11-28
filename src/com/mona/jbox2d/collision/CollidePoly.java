@@ -31,7 +31,7 @@ import com.mona.jbox2d.common.Vec2;
  * Polygon overlap solver - for internal use.
  */
 public class CollidePoly {
-    static int clipSegmentToLine(ClipVertex vOut[], ClipVertex vIn[],
+    static int clipSegmentToLine(ClipVertex[] vOut, ClipVertex[] vIn,
                                  Vec2 normal, float offset) {
         // Start with no output points
         int numOut = 0;
@@ -216,7 +216,7 @@ public class CollidePoly {
         return separation;
     }
 
-    static void findIncidentEdge(ClipVertex c[],
+    static void findIncidentEdge(ClipVertex[] c,
                                  PolygonShape poly1, com.mona.jbox2d.common.XForm xf1, int edge1,
                                  PolygonShape poly2, com.mona.jbox2d.common.XForm xf2) {
 
@@ -307,7 +307,7 @@ public class CollidePoly {
             flip = 0;
         }
 
-        ClipVertex incidentEdge[] = new ClipVertex[2];
+        ClipVertex[] incidentEdge = new ClipVertex[2];
         findIncidentEdge(incidentEdge, poly1, xf1, edge1, poly2, xf2);
 
         int count1 = poly1.getVertexCount();
@@ -332,8 +332,8 @@ public class CollidePoly {
         float sideOffset2 = sideNormal.x * v12x + sideNormal.y * v12y;
 
         // Clip incident edge against extruded edge1 side edges.
-        ClipVertex clipPoints1[] = new ClipVertex[2];
-        ClipVertex clipPoints2[] = new ClipVertex[2];
+        ClipVertex[] clipPoints1 = new ClipVertex[2];
+        ClipVertex[] clipPoints2 = new ClipVertex[2];
         int np;
 
         // Clip to box side 1

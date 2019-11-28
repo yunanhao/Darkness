@@ -45,7 +45,7 @@ public class SnakeGame extends JFrame {
         new Thread(new ThreadUpadte()).start();
     }
 
-    public static void main(final String args[]) {
+    public static void main(final String[] args) {
         new SnakeGame();
     }
 

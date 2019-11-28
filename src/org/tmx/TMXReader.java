@@ -55,7 +55,7 @@ public class TMXReader {
             final Element layerElement = (Element) layer.item(i);
             final int[][] map_array = new int[height][width];
             // 填充数组
-            final String mapTemp[] = layerElement.getTextContent().split(",");
+            final String[] mapTemp = layerElement.getTextContent().split(",");
             for (int y = 0, count = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
                     map_array[y][x] = Integer.parseInt(mapTemp[count++].trim());

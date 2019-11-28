@@ -6,7 +6,7 @@ import java.awt.*;
  * 判断一个点是否在凸多边形内部
  */
 public class Quadrangle {
-    public static boolean pInQuadrangle(final Point point[], final Point p) {
+    public static boolean pInQuadrangle(final Point[] point, final Point p) {
         switch (point.length) {
             case 3:
                 return pIn3(point[0], point[1], point[2], p);

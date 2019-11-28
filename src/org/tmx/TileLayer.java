@@ -27,7 +27,7 @@ public class TileLayer {
         if (height != null) {
             this.height = Integer.parseInt(height);
         }
-        final String mapTemp[] = data.replaceAll("\\s*", "").split(",", 0);
+        final String[] mapTemp = data.replaceAll("\\s*", "").split(",", 0);
         this.data = new int[this.height][this.width];
         for (int y = 0, count = 0; y < this.height; y++) {
             for (int x = 0; x < this.width; x++) {

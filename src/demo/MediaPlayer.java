@@ -28,7 +28,7 @@ public final class MediaPlayer {
          * 从输入流中读取数据发送到混音器
          */
         int count;
-        byte tempBuffer[] = new byte[1024];
+        byte[] tempBuffer = new byte[1024];
         while ((count = audioInputStream.read(tempBuffer, 0, tempBuffer.length)) != -1) {
             if (count > 0) {
                 sourceDataLine.write(tempBuffer, 0, count);

@@ -28,8 +28,8 @@ public class AStarRoute {
     private final int end_x;         // 终点坐标X
     private final int end_y;         // 终点坐标Y
     private final int astar_counter; // 算法嵌套深度
-    public int openList[][][]; // 打开列表
-    private boolean closeList[][]; // 关闭列表
+    public int[][][] openList; // 打开列表
+    private boolean[][] closeList; // 关闭列表
     private int openListLength;
     private boolean isFound;       // 是否找到路径
 

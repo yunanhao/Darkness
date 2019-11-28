@@ -65,17 +65,17 @@ public class BroadPhase {
     public static final boolean s_validate = false;
     private static final boolean debugPrint = false;
     public com.mona.jbox2d.collision.PairManager m_pairManager;
-    public Proxy m_proxyPool[];
-    public Bound m_bounds[][];
+    public Proxy[] m_proxyPool;
+    public Bound[][] m_bounds;
     public AABB m_worldAABB;
 
     //PairCallback pairCallback;
     public Vec2 m_quantizationFactor;
     public int m_proxyCount;
     int m_freeProxy;
-    com.mona.jbox2d.collision.BufferedPair pairBuffer[];
+    com.mona.jbox2d.collision.BufferedPair[] pairBuffer;
     int m_pairBufferCount;
-    int m_queryResults[];
+    int[] m_queryResults;
     int m_queryResultCount;
     int m_timeStamp;
 
@@ -244,8 +244,8 @@ public class BroadPhase {
 
         int boundCount = 2 * m_proxyCount;
 
-        int lowerValues[] = new int[2];
-        int upperValues[] = new int[2];
+        int[] lowerValues = new int[2];
+        int[] upperValues = new int[2];
         computeBounds(lowerValues, upperValues, aabb);
 
         for (int axis = 0; axis < 2; ++axis) {
@@ -641,11 +641,11 @@ public class BroadPhase {
             System.out.println("Query(2 args)");
         }
 
-        int lowerValues[] = new int[2];
-        int upperValues[] = new int[2];
+        int[] lowerValues = new int[2];
+        int[] upperValues = new int[2];
         computeBounds(lowerValues, upperValues, aabb);
 
-        int indexes[] = new int[2]; // lowerIndex, upperIndex;
+        int[] indexes = new int[2]; // lowerIndex, upperIndex;
 
         query(indexes, lowerValues[0], upperValues[0], m_bounds[0],
                 2 * m_proxyCount, 0);

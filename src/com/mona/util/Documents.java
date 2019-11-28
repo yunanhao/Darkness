@@ -63,7 +63,7 @@ public final class Documents {
             final Element layerElement = (Element) layer.item(i);
             final int[][] map_array = new int[height][width];
             // 填充数组
-            final String mapTemp[] = layerElement.getTextContent().split(",", 0);
+            final String[] mapTemp = layerElement.getTextContent().split(",", 0);
             for (int y = 0, count = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
                     map_array[y][x] = Integer.parseInt(mapTemp[count++].trim());
@@ -159,18 +159,18 @@ public final class Documents {
         // 去除所有 </标签名称> 格式的结束标签
         final String article_new = article.replaceAll("</\\S*>", "");
         // 以 < 或者 > 分割字符串
-        final String sections[] = article_new.split("<|>");
+        final String[] sections = article_new.split("<|>");
         // 每段节点
         for (int i = 0; i < sections.length; i++) {
             // 得到所有有数据的字符串
             if (!sections[i].matches("\\s*")) {
                 // 以空格划分字符串获取包含单个元素名称、元素属性或者元素内容的子串
-                final String attribute[] = sections[i].split(" ");
+                final String[] attribute = sections[i].split(" ");
                 String prefix = "";
                 for (int k = 0; k < attribute.length; k++) {
                     // 以正则获取单个元素属性的键值对的组合
                     if (attribute[k].matches("([a-z]+)\\s*=\\s*\"([^\"]+)\"[/?|\\??]?")) {
-                        final String key_value[] = attribute[k].replaceAll("\"|/|\\?", "").split("=");
+                        final String[] key_value = attribute[k].replaceAll("\"|/|\\?", "").split("=");
                         // 将单个元素属性的键值对的组合分开并存入HashMap
                         final String key = prefix + "_" + key_value[0];
                         final String value = key_value[1];
@@ -214,18 +214,18 @@ public final class Documents {
         // 去除所有 </标签名称> 格式的结束标签
         final String article_new = article.toString().replaceAll("<\\s*\\S*>\\s*", "");
         // 以 < 或者 > 分割字符串
-        final String sections[] = article_new.split("<|>");
+        final String[] sections = article_new.split("<|>");
         // 每段节点
         for (int i = 0; i < sections.length; i++) {
             // 得到所有有数据的字符串
             if (!sections[i].matches("\\s*")) {
                 // 以空格划分字符串获取包含单个元素名称、元素属性或者元素内容的子串
-                final String attribute[] = sections[i].split(" ");
+                final String[] attribute = sections[i].split(" ");
                 String prefix = "";
                 for (int k = 0; k < attribute.length; k++) {
                     // 以正则获取单个元素属性的键值对的组合
                     if (attribute[k].matches("([a-z]+)\\s*=\\s*\"([^\"]+)\"[/?|\\??]?")) {
-                        final String key_value[] = attribute[k].replaceAll("\"|/|\\?", "").split("=");
+                        final String[] key_value = attribute[k].replaceAll("\"|/|\\?", "").split("=");
                         // 将单个元素属性的键值对的组合分开并存入HashMap
                         final String key = prefix + "_" + key_value[0];
                         final String value = key_value[1];
@@ -249,7 +249,7 @@ public final class Documents {
     @Deprecated
     public static int[][] ioToArray(final File file, final int column, final int row) {
         String array = "";
-        final byte buffin[] = new byte[1024];
+        final byte[] buffin = new byte[1024];
         try {
             final FileInputStream in = new FileInputStream(file);
             for (int length = 0; (length = in.read(buffin)) != -1; ) {
@@ -259,8 +259,8 @@ public final class Documents {
         } catch (final IOException e) {
             e.printStackTrace();
         }
-        final String s[] = array.replaceAll("\\s*", "").split(",");
-        final int map[][] = new int[row][column];
+        final String[] s = array.replaceAll("\\s*", "").split(",");
+        final int[][] map = new int[row][column];
         for (int j = 0, count = 0; j < map.length; j++) {
             for (int k = 0; k < map[j].length; k++, count++) {
                 map[j][k] = Integer.parseInt(s[count]);
@@ -471,10 +471,10 @@ public final class Documents {
         }
         buffread.close();
         Documents.loadXml("src\\vivi\\map.xml");
-        final int map[][] = {{00, 01, 02, 03, 04, 05, 06, 07, 8, 9}, {10, 11, 12, 13, 14, 15, 16, 17, 18, 19}, {20,
+        final int[][] map = {{00, 01, 02, 03, 04, 05, 06, 07, 8, 9}, {10, 11, 12, 13, 14, 15, 16, 17, 18, 19}, {20,
                 21, 22, 23, 24, 25, 26, 27, 28, 29}, {30, 31, 32, 33, 34, 35, 36, 37, 38, 39}, {40, 41, 42, 43, 44, 45, 46,
                 47, 48, 49},};
-        int gm[];
+        int[] gm;
         int length = 0;
         int index = 0;
         final int mapx = map.length, mapy = map[0].length;
@@ -504,7 +504,7 @@ public final class Documents {
             System.out.println();
         }
         for (int i = 0; i < mapx - 1; i++) {
-            final int temp[] = map[i + 1];
+            final int[] temp = map[i + 1];
             map[i] = temp;
             for (int j = 0; j < mapy; j++) {
                 System.out.print("B " + i + j + "=" + map[i][j] + "\t");
@@ -537,7 +537,7 @@ public final class Documents {
      */
     public static HashMap<String, String> readText(final File textFile) {
         String article = "";
-        final byte buffin[] = new byte[1024];
+        final byte[] buffin = new byte[1024];
         final HashMap<String, String> attributes = new HashMap<>();
         try {
             final FileInputStream in = new FileInputStream(textFile);
@@ -549,7 +549,7 @@ public final class Documents {
 
             for (int i = 0; i < section.length; i++) {
                 if (i == 1) {
-                    final String header[] = section[i].split("\\s", 0);
+                    final String[] header = section[i].split("\\s", 0);
                     for (int j = 0; j < header.length; j++) {
                         if (header[j].startsWith("width")) {
                             attributes.put("column", header[j].substring(6));
@@ -565,7 +565,7 @@ public final class Documents {
                         }
                     }
                 } else if (i == 2) {
-                    final String tilesets[] = section[i].replaceAll("\\s", "").split("tileset", 0);
+                    final String[] tilesets = section[i].replaceAll("\\s", "").split("tileset", 0);
                     for (int j = 0; j < tilesets.length; j++) {
                         if (tilesets[j].startsWith("=")) {
                             // TODO

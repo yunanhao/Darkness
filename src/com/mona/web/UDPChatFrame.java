@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.nio.charset.StandardCharsets;
 
 public class UDPChatFrame extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -110,8 +111,8 @@ public class UDPChatFrame extends JPanel {
 
         public void send(int port) {
             try {
-                text = new String(inputTextArea.getText().getBytes(), "utf-8");
-                byte buffered[] = text.getBytes();
+                text = new String(inputTextArea.getText().getBytes(), StandardCharsets.UTF_8);
+                byte[] buffered = text.getBytes();
                 DatagramPacket database = new DatagramPacket(buffered, buffered.length, InetAddress.getByName(address), port);
                 showTextArea.setFont(new Font("微软雅黑", Font.CENTER_BASELINE, 24));
                 showTextArea.append("本机" + ":\n");
@@ -134,11 +135,11 @@ public class UDPChatFrame extends JPanel {
         @Override
         public void run() {
             try {
-                byte buff[] = new byte[4096];
+                byte[] buff = new byte[4096];
                 DatagramPacket database = new DatagramPacket(buff, buff.length);
                 while (true) {
                     datagramSocket.receive(database);
-                    String text = new String(database.getData(), 0, database.getLength(), "utf-8");
+                    String text = new String(database.getData(), 0, database.getLength(), StandardCharsets.UTF_8);
                     showTextArea.setFont(new Font("微软雅黑", Font.CENTER_BASELINE, 24));
                     showTextArea.append(database.getAddress() + ":\n");
                     showTextArea.setFont(new Font("仿宋", Font.CENTER_BASELINE, 16));

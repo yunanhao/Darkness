@@ -393,7 +393,7 @@ public interface ShapeUtil {
      * @param point1 第一个凸多边形的坐标数组
      * @param point2 第二个凸多边形的坐标数组
      */
-    static boolean isOverlap2D(int point1[], int point2[]) {
+    static boolean isOverlap2D(int[] point1, int[] point2) {
         // 先利用AABB包围盒进行粗略检测
         int minX1 = point1[0], minY1 = point1[1], maxX1 = point1[0], maxY1 = point1[1];
         int minX2 = point2[0], minY2 = point2[1], maxX2 = point2[0], maxY2 = point2[1];
@@ -516,7 +516,7 @@ public interface ShapeUtil {
     }
 
     // 任意两个多边形的边是否相交
-    static boolean intersects(int point1[], int point2[]) {
+    static boolean intersects(int[] point1, int[] point2) {
         // 先利用AABB包围盒进行粗略检测
         double ax = point1[0], ay = point1[1], bx = point1[0], by = point1[1];
         double cx = point2[0], cy = point2[1], dx = point2[0], dy = point2[1];

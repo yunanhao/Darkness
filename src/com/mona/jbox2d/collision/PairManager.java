@@ -36,11 +36,11 @@ public class PairManager {
     // of two
     static final int TABLE_MASK = TABLE_CAPACITY - 1;
 
-    public Pair m_pairs[];
+    public Pair[] m_pairs;
 
     public int m_pairCount;
 
-    public int m_hashTable[];
+    public int[] m_hashTable;
 
     //int m_next[];
 

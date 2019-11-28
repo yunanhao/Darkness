@@ -213,7 +213,7 @@ public final class ImageFactory {
      */
     public static final BufferedImage[] splitImage(final int tile_w, final int tile_h, final int tilecount,
                                                    final Image... image) {
-        final BufferedImage images[] = new BufferedImage[tilecount + 1];
+        final BufferedImage[] images = new BufferedImage[tilecount + 1];
         images[0] = new BufferedImage(64, 64, BufferedImage.TYPE_4BYTE_ABGR);
         for (int i = 0, length = image.length; i < length; i++) {
             final int column = image[i].getWidth(null) / tile_w;

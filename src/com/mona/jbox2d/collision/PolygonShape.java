@@ -52,15 +52,15 @@ public class PolygonShape extends Shape implements SupportsGenericDistance {
     /**
      * The vertices of the shape.  Note: use getVertexCount(), not m_vertices.length, to get number of active vertices.
      */
-    public com.mona.jbox2d.common.Vec2 m_vertices[];
+    public com.mona.jbox2d.common.Vec2[] m_vertices;
     /**
      * The normals of the shape.  Note: use getVertexCount(), not m_normals.length, to get number of active normals.
      */
-    public com.mona.jbox2d.common.Vec2 m_normals[];
+    public com.mona.jbox2d.common.Vec2[] m_normals;
     /**
      * The normals of the shape.  Note: use getVertexCount(), not m_coreVertices.length, to get number of active vertices.
      */
-    public com.mona.jbox2d.common.Vec2 m_coreVertices[];
+    public com.mona.jbox2d.common.Vec2[] m_coreVertices;
     /**
      * Number of active vertices in the shape.
      */

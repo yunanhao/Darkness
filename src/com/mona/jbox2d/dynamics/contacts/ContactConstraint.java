@@ -32,7 +32,7 @@ import com.mona.jbox2d.dynamics.Body;
 
 // Updated to rev 139 of b2ContactSolver.h
 public class ContactConstraint {
-    public com.mona.jbox2d.dynamics.contacts.ContactConstraintPoint points[];
+    public com.mona.jbox2d.dynamics.contacts.ContactConstraintPoint[] points;
 
     public Vec2 normal;
 

@@ -15,6 +15,9 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
         vertexs = new Vertex[0];
     }
 
+    public int size() {
+        return vertexs.length;
+    }
     @Test
     public void test() {
         Graph<String, Integer> graph = new Graph<>();
@@ -24,28 +27,16 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
         System.out.println(graph);
     }
 
-    private void link(DATA origin, DATA target, COST cost) {
+    public void link(DATA origin, DATA target, COST cost) {
         Vertex<DATA, COST> vertexOrigin = getVertex(origin);
         Vertex<DATA, COST> vertexTarget = getVertex(target);
-        Edge<DATA, COST> edge;
-        boolean needCreateEdge = false;
         if (vertexOrigin == null) {
-            vertexOrigin = new Vertex<>();
-            vertexOrigin.setDATA(origin);
-            needCreateEdge = true;
+            vertexOrigin = createVertex(origin);
         }
         if (vertexTarget == null) {
-            vertexTarget = new Vertex<>();
-            vertexTarget.setDATA(target);
-            needCreateEdge = true;
+            vertexTarget = createVertex(target);
         }
-//        if (needCreateEdge){
-        edge = new Edge<>(vertexOrigin, vertexTarget, cost);
-//        }else {
-//            edge = vertexOrigin.getEdge(vertexTarget);
-//        }
-        vertexOrigin.add(edge);
-        vertexTarget.add(edge);
+        vertexOrigin.connect(vertexTarget, cost);
     }
 
     public boolean contains(DATA data) {
@@ -66,13 +57,19 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
         return null;
     }
 
-    Vertex<DATA, COST> createVertex(DATA data) {
+    public Vertex<DATA, COST> createVertex(DATA data) {
+        Vertex<DATA, COST> vertex = getVertex(data);
+        if (vertex != null) {
+            return vertex;
+        }
         int length = this.vertexs.length;
-        Vertex<DATA, COST>[] vertexs = new Vertex[length + 1];
-        System.arraycopy(this.vertexs, 0, vertexs, 0, length);
-        vertexs[length] = (Vertex<DATA, COST>) new Vertex<>().setDATA(data);
-        this.vertexs = vertexs;
-        return vertexs[length];
+        Vertex<DATA, COST>[] vertexes = new Vertex[length + 1];
+        System.arraycopy(this.vertexs, 0, vertexes, 0, length);
+        vertex = new Vertex<>();
+        vertex.setDATA(data);
+        vertexes[length] = vertex;
+        this.vertexs = vertexes;
+        return vertexes[length];
     }
 
     @Override
@@ -121,38 +118,40 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
         /**
          * 增加一条边
          *
-         * @param edge 边
+         * @param target 边
+         * @param cost 花费
          * @return 是否操作成功
          */
-        private boolean add(Edge<DATA, COST> edge) {
+        private boolean connect(Vertex<DATA, COST> target, COST cost) {
+            Edge<DATA, COST> edge = new Edge<>(this, target, cost);
             if (mFirstEdge != null) {
-                edge.put(this, mFirstEdge);
+                edge.setNext(mFirstEdge);
             }
             mFirstEdge = edge;
             return true;
         }
 
         /**
-         * 删除一条边
+         * 删除顶点
          *
-         * @param edge 边
+         * @param target 边
          * @return 是否操作成功
          */
-        public boolean del(Edge<DATA, COST> edge) {
+        public boolean disconnect(Vertex<DATA, COST> target) {
             if (mFirstEdge == null) {
                 return false;
             }
-            Edge<DATA, COST> next = mFirstEdge;
-            while (true) {
-                if (edge == next) {
-                    mFirstEdge = next.next(this);
+            Edge<DATA, COST> prev = mFirstEdge;
+            Edge<DATA, COST> next = mFirstEdge.next;
+            while (next != null) {
+                if (next.getTarget() == target) {
+                    prev.setNext(next.getNext());
                     return true;
                 }
-                next = next.next(this);
-                if (next == null) {
-                    return false;
-                }
+                prev = next;
+                next = next.getNext();
             }
+            return false;
         }
 
         /**
@@ -161,13 +160,13 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
          * @param vertex 顶点对象
          * @return true表示可以直达
          */
-        public boolean contains(Vertex<DATA, COST> vertex) {
+        public boolean contains(Vertex<DATA, COST> target) {
             Edge<DATA, COST> next = mFirstEdge;
             while (next != null) {
-                if (next.getCost(vertex) != null) {
+                if (next.getTarget() == target) {
                     return true;
                 }
-                next = next.next(this);
+                next = next.getNext();
             }
             return false;
         }
@@ -179,15 +178,15 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
             sb.append(":");
             Edge<DATA, COST> next = mFirstEdge;
             while (next != null) {
-                sb.append(next.target(this).mData);
-                next = next.next(this);
+                sb.append(next);
+                next = next.getNext();
             }
             return sb.toString();
         }
 
         public Edge<DATA, COST> getEdge(Vertex<DATA, COST> target) {
-            for (Edge<DATA, COST> next = mFirstEdge; next != null; next = next.next(this)) {
-                if (next.getCost(target) != null) {
+            for (Edge<DATA, COST> next = mFirstEdge; next != null; next = next.getNext()) {
+                if (next.getTarget() == target) {
                     return next;
                 }
             }
@@ -203,11 +202,11 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
         /**
          * 用于组成边的链表
          */
-        private Edge<DATA, COST> left, right;
+        private Edge<DATA, COST> next;
         /**
          * 从起点到终点需要的花费
          */
-        private COST mCost, mInvCost;
+        private COST mCost;
 
         public Edge(Vertex<DATA, COST> origin, Vertex<DATA, COST> target, COST cost) {
             this.mOrigin = origin;
@@ -215,57 +214,37 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
             this.mCost = cost;
         }
 
-        public void 反向连通() {
-
+        public COST getCost() {
+            return mCost;
         }
 
-        public void 反向连通(COST invCost) {
-
+        public void setCost(COST cost) {
+            this.mCost = cost;
         }
 
-        public COST getCost(Vertex<DATA, COST> target) {
-            if (target == mTarget) {
-                return mCost;
-            }
-            if (target == mOrigin) {
-                return mInvCost;
-            }
-            return null;
+        public Edge<DATA, COST> getNext() {
+            return next;
         }
 
-        /**
-         * 为目标顶点增加一条边
-         */
-        private Edge<DATA, COST> put(Vertex<DATA, COST> origin, Edge<DATA, COST> edge) {
-            if (mOrigin == origin) {
-                right = edge;
-                return edge;
-            }
-            if (mTarget == origin) {
-                left = edge;
-                return edge;
-            }
-            return null;
+        public void setNext(Edge<DATA, COST> next) {
+            this.next = next;
         }
 
-        private Edge<DATA, COST> next(Vertex<DATA, COST> origin) {
-            if (mOrigin == origin) {
-                return right;
-            }
-            if (mTarget == origin) {
-                return left;
-            }
-            return null;
+        public Vertex<DATA, COST> getTarget() {
+            return mTarget;
         }
 
-        public Vertex<DATA, COST> target(Vertex<DATA, COST> origin) {
-            if (mOrigin == origin) {
-                return mTarget;
-            }
-            if (mTarget == origin) {
-                return mOrigin;
-            }
-            return null;
+        public Vertex<DATA, COST> getOrigin() {
+            return mOrigin;
+        }
+
+        @Override
+        public String toString() {
+            return "[" +
+                    mTarget.getDATA() +
+                    "-->" +
+                    getCost() +
+                    ']';
         }
     }
 }

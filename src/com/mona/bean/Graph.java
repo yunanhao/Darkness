@@ -7,14 +7,16 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
     /**
      * 图中所有的顶点对象
      */
-    private Vertex<DATA, COST>[] vertexs;
-
-    public Graph() {
-        vertexs = new Vertex[0];
-    }
+    private Vertex<DATA, COST> firstVertex;
 
     public int size() {
-        return vertexs.length;
+        int i = 0;
+        Vertex<DATA, COST> temp = firstVertex;
+        while (temp != null) {
+            temp = temp.mRight;
+            i++;
+        }
+        return i;
     }
 
     public void link(DATA origin, DATA target, COST cost) {
@@ -33,19 +35,23 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
     }
 
     public boolean contains(DATA data) {
-        for (Vertex<DATA, COST> v : vertexs) {
-            if (data.equals(v.mData)) {
+        Vertex<DATA, COST> temp = firstVertex;
+        while (temp != null) {
+            if (data.equals(temp.mData)) {
                 return true;
             }
+            temp = temp.mRight;
         }
         return false;
     }
 
     public Vertex<DATA, COST> getVertex(DATA data) {
-        for (Vertex<DATA, COST> v : vertexs) {
-            if (data.equals(v.mData)) {
-                return v;
+        Vertex<DATA, COST> temp = firstVertex;
+        while (temp != null) {
+            if (data.equals(temp.mData)) {
+                return temp;
             }
+            temp = temp.mRight;
         }
         return null;
     }
@@ -55,16 +61,47 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
         if (vertex != null) {
             return vertex;
         }
-        int length = this.vertexs.length;
-        Vertex<DATA, COST>[] vertexes = new Vertex[length + 1];
-        System.arraycopy(this.vertexs, 0, vertexes, 0, length);
         vertex = new Vertex<>();
         vertex.setDATA(data);
-        vertexes[length] = vertex;
-        this.vertexs = vertexes;
-        return vertexes[length];
+        if (firstVertex != null) {
+            firstVertex.mLeft = vertex;
+            vertex.mRight = firstVertex;
+        }
+        firstVertex = vertex;
+        return vertex;
     }
 
+    public Vertex<DATA, COST> deleteVertex(DATA data) {
+        for (Vertex<DATA, COST> vertex = firstVertex; vertex != null; vertex = vertex.mRight) {
+            if (data.equals(vertex.mData)) {
+                //重新连接图中节点的关系网
+                if (vertex.mLeft != null) {
+                    vertex.mLeft.mRight = vertex.mRight;
+                } else {
+                    firstVertex = vertex.mRight;
+                }
+                if (vertex.mRight != null) {
+                    vertex.mRight.mLeft = vertex.mLeft;
+                }
+                //删除被删除节点的前驱元素中可以到达当前节点的边
+                Edge<DATA, COST> edge = vertex.mFirstPrev;
+                while (edge != null) {
+                    if (vertex.equals(edge.mTarget)) {
+                        edge.mOrigin.disconnect(vertex);
+                    }
+                    edge = edge.mPrev;
+                }
+                //删除被删除的节点可以抵达的目标节点所持有的前驱
+                edge = vertex.mFirstNext;
+                while (edge != null) {
+                    edge.mTarget.delPrev(edge);
+                    edge = edge.mNext;
+                }
+                return vertex;
+            }
+        }
+        return null;
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -74,7 +111,7 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
         sb.append('"');
         sb.append(':');
         sb.append('[');
-        for (Vertex vertex : vertexs) {
+        for (Vertex<DATA, COST> vertex = firstVertex; vertex != null; vertex = vertex.mRight) {
             sb.append('{');
             sb.append(vertex);
             sb.append('}');
@@ -102,6 +139,8 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
 
         private Edge<DATA, COST> mFirstPrev;
         private Edge<DATA, COST> mFirstNext;
+        private Vertex<DATA, COST> mLeft;
+        private Vertex<DATA, COST> mRight;
 
         /**
          * 得到节点的数据

@@ -41,5 +41,7 @@ public class Main extends Application {
         graph.link("g", "g", 0);
         graph.createVertex("g");
         System.out.println(graph);
+        graph.deleteVertex("a");
+        System.out.println(graph);
     }
 }

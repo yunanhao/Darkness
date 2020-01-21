@@ -32,10 +32,10 @@ import java.util.Random;
 @SuppressWarnings("serial")
 public class AStarTest extends JPanel implements ActionListener, MouseListener, MouseMotionListener {
     // 地图描述
-    private final int[][] map = new int[80][160];
+    private final int[][] map = new int[60][80];
     // 无法移动区域
     private final int[] limit = {1};
-    private final int CS = 8;
+    private final int CS = 16;
     private final AStar aStar;
     private final Random random;
     private final Dimension dimension;

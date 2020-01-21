@@ -13,5 +13,5 @@ public interface IBaseMap {
 
     void update();
 
-    IDrawable getDrawable();
+    IDrawable getDrawable(int width, int height);
 }

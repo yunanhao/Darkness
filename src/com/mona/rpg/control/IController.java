@@ -18,4 +18,8 @@ public interface IController extends Runnable {
     void run();
 
     void postEvent(IBaseEvent event);
+
+    void postEvent(String tag, int x, int y);
+
+    IBaseEvent createEvent(String tag, int x, int y);
 }

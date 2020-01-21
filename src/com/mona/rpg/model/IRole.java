@@ -23,7 +23,7 @@ import com.mona.rpg.view.ICanvas;
 public interface IRole {
     void onCreate();
 
-    void onDestory();
+    void onDestroy();
 
     void onStart();
 

@@ -5,7 +5,15 @@ package com.mona.rpg.model;
  */
 public interface IBaseEvent {
 
-    int getCode();
+    int getIdentity();
 
+    String getType();
 
+    long getTime();
+
+    IRole getSource();
+
+    String toString();
+
+    int hashCode();
 }

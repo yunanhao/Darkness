@@ -120,7 +120,8 @@ public class ConvexHull {
      * @return 1:P在向量AB的左方
      */
     public static double onLeft(double ax, double ay, double bx, double by, double px, double py) {
-        double compute = (bx - ax) * (py - ay) - (px - ax) * (by - ay);
+        double compute;
+        compute = (bx - ax) * (py - ay) - (px - ax) * (by - ay);
         // compute = ax * by + px * ay + bx * py - px * by - bx * ay - ax * py;
         if (compute > 0) {
             return 1;

@@ -7,8 +7,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * 整个工程的容器
+ */
 public class Container implements IDrawable, MouseListener, MouseMotionListener, MouseWheelListener {
-
     private IController controller;
     private IScene[] mScenes;
     private ICanvas mCanvas;
@@ -30,7 +32,9 @@ public class Container implements IDrawable, MouseListener, MouseMotionListener,
 
     @Override
     public void draw(ICanvas canvas) {
+        canvas.setPaint(mPaint);
 
+        canvas.draw(mScenes[mScenes.length - 1]);
     }
 
     @Override
@@ -50,12 +54,12 @@ public class Container implements IDrawable, MouseListener, MouseMotionListener,
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
+        controller.postEvent("mouseEntered", e.getX(), e.getY());
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+        controller.postEvent("mouseExited", e.getX(), e.getY());
     }
 
     @Override
@@ -70,7 +74,7 @@ public class Container implements IDrawable, MouseListener, MouseMotionListener,
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-
+        controller.postEvent("mouseWheelMoved", e.getX(), e.getY());
     }
 
 }

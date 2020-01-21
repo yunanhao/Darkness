@@ -12,7 +12,7 @@ import java.util.List;
 public class Melkman {
     private final int N;// 数据个数
     private Point[] pointArray;// 坐标数组
-    private int D[]; // 数组索引
+    private int[] D; // 数组索引
 
     public Melkman(List<Point> pList) {
         pointArray = new Point[pList.size()];
@@ -24,7 +24,7 @@ public class Melkman {
         D = new int[2 * N];
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         File file = new File("F:/data.txt");
         BufferedReader br = null;
         try {
@@ -35,6 +35,7 @@ public class Melkman {
         List<Point> pointList = new ArrayList<Point>();
         String str = null;
         try {
+            assert br != null;
             str = br.readLine();
         } catch (IOException e) {
             e.printStackTrace();

@@ -6,7 +6,7 @@ import com.mona.rpg.model.IMatrix;
 /**
  * 执行绘制操作
  */
-public interface ICanvas {
+public interface ICanvas extends IDrawable {
 
     /**
      * 绘制矩形
@@ -31,7 +31,7 @@ public interface ICanvas {
     /**
      * 设置画笔
      */
-    IPaint setPaint(IPaint paint);
+    void setPaint(IPaint paint);
 
     /**
      * 获取当前画笔对象

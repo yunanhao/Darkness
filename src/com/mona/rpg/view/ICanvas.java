@@ -1,6 +1,6 @@
 package com.mona.rpg.view;
 
-import com.mona.rpg.model.IBaseDrawable;
+import com.mona.rpg.model.IDrawable;
 import com.mona.rpg.model.IMatrix;
 
 /**
@@ -26,7 +26,7 @@ public interface ICanvas {
     /**
      * 绘制复杂对象
      */
-    void draw(IBaseDrawable drawable);
+    void draw(IDrawable drawable);
 
     /**
      * 设置画笔

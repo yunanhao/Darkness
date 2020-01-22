@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ControllerImpl implements IController {
-    private IBaseMap gameMap;
     private static volatile IController controller;
+
+    private IBaseMap gameMap;
     private List<IBaseEvent> eventList;
     private List<IBaseListener> listenerList;
     private List<IScene> sceneList;
@@ -37,8 +38,14 @@ public class ControllerImpl implements IController {
 
     @Override
     public void start() {
-        gameMap.getDrawable(200, 100);
+        gameMap.init();
         container.init();
+        new Thread() {
+            @Override
+            public void run() {
+                container.repaint();
+            }
+        }.start();
     }
 
     @Override

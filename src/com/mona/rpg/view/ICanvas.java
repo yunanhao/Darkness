@@ -11,12 +11,12 @@ public interface ICanvas extends IDrawable {
     /**
      * 绘制矩形
      */
-    void drawRect(int leftTop, int rightTop, int rightBottom, int leftBottom);
+    void drawRect(int left, int top, int right, int bottom);
 
     /**
      * 绘制圆形
      */
-    void drawOval(int centerX, int CenterY, int width, int height);
+    void drawOval(int centerX, int centerY, int width, int height);
 
     /**
      * 绘制曲线

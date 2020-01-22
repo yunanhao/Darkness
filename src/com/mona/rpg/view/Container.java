@@ -3,6 +3,7 @@ package com.mona.rpg.view;
 import com.mona.rpg.control.ControllerImpl;
 import com.mona.rpg.control.EventImpl;
 import com.mona.rpg.control.IController;
+import com.mona.rpg.model.BaseMapImpl;
 import com.mona.rpg.model.IDrawable;
 
 import javax.swing.*;
@@ -12,23 +13,19 @@ import java.awt.event.*;
 /**
  * 整个工程的容器
  */
-public class Container implements IDrawable, MouseListener, MouseMotionListener, MouseWheelListener {
+public class Container extends JPanel implements IDrawable, MouseListener, MouseMotionListener, MouseWheelListener {
     private IController controller;
-    private IScene[] mScenes;
-    private ICanvas mCanvas;
-    private IPaint mPaint;
+    private IScene scene;
+    private Graphics2D graphics2D;
 
     public void init() {
-        if (mScenes != null)
-            mCanvas.draw(mScenes[mScenes.length - 1]);
         controller = ControllerImpl.getInstance();
-        JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(800, 600));
-        panel.addMouseListener(this);
-        panel.addMouseWheelListener(this);
-        panel.addMouseMotionListener(this);
+        setPreferredSize(new Dimension(800, 600));
+        addMouseListener(this);
+        addMouseWheelListener(this);
+        addMouseMotionListener(this);
         JFrame frame = new JFrame("血腥大陆 V1.0");
-        frame.setContentPane(panel);
+        frame.setContentPane(this);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -36,9 +33,20 @@ public class Container implements IDrawable, MouseListener, MouseMotionListener,
 
     @Override
     public void draw(ICanvas canvas) {
-        canvas.setPaint(mPaint);
+        if (scene != null)
+            canvas.draw(scene);
+        if (canvas instanceof CanvasImpl) {
+            ((CanvasImpl) canvas).init(graphics2D);
+            canvas.draw(BaseMapImpl.getInstance().getDrawable());
+        }
+        graphics2D.fillRect(0, 0, 20, 30);
+    }
 
-        canvas.draw(mScenes[mScenes.length - 1]);
+    @Override
+    public void paint(Graphics g) {
+        g.setColor(Color.black);
+        graphics2D = (Graphics2D) g;
+        draw(CanvasImpl.getInstance());
     }
 
     @Override

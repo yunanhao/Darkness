@@ -1,6 +1,6 @@
 package demo;
 
-import com.mona.util.GeometryUtil;
+import demo.util.GeometryUtil;
 
 import javax.swing.*;
 import java.awt.*;

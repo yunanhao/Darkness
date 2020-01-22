@@ -1,5 +1,7 @@
 package com.mona.rpg.view;
 
+import com.mona.rpg.control.ControllerImpl;
+import com.mona.rpg.control.EventImpl;
 import com.mona.rpg.control.IController;
 import com.mona.rpg.model.IDrawable;
 
@@ -17,7 +19,9 @@ public class Container implements IDrawable, MouseListener, MouseMotionListener,
     private IPaint mPaint;
 
     public void init() {
-        mCanvas.draw(mScenes[mScenes.length - 1]);
+        if (mScenes != null)
+            mCanvas.draw(mScenes[mScenes.length - 1]);
+        controller = ControllerImpl.getInstance();
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(800, 600));
         panel.addMouseListener(this);
@@ -39,42 +43,42 @@ public class Container implements IDrawable, MouseListener, MouseMotionListener,
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        controller.postEvent("mouseDragged", e.getX(), e.getY());
+        controller.postEvent(EventImpl.create("mouseDragged", e.getX(), e.getY()));
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        controller.postEvent("mouseMoved", e.getX(), e.getY());
+        controller.postEvent(EventImpl.create("mouseMoved", e.getX(), e.getY()));
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        controller.postEvent("mouseClicked", e.getX(), e.getY());
+        controller.postEvent(EventImpl.create("mouseClicked", e.getX(), e.getY()));
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        controller.postEvent("mouseEntered", e.getX(), e.getY());
+        controller.postEvent(EventImpl.create("mouseEntered", e.getX(), e.getY()));
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        controller.postEvent("mouseExited", e.getX(), e.getY());
+        controller.postEvent(EventImpl.create("mouseExited", e.getX(), e.getY()));
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        controller.postEvent("mousePressed", e.getX(), e.getY());
+        controller.postEvent(EventImpl.create("mousePressed", e.getX(), e.getY()));
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        controller.postEvent("mouseReleased", e.getX(), e.getY());
+        controller.postEvent(EventImpl.create("mouseReleased", e.getX(), e.getY()));
     }
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        controller.postEvent("mouseWheelMoved", e.getX(), e.getY());
+        controller.postEvent(EventImpl.create("mouseWheelMoved", e.getX(), e.getY()));
     }
 
 }

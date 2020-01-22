@@ -1,6 +1,6 @@
 package demo;
 
-import com.mona.util.ShapeUtil;
+import demo.util.ShapeUtil;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

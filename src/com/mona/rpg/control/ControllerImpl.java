@@ -1,26 +1,44 @@
 package com.mona.rpg.control;
 
-import com.mona.rpg.model.IBaseEvent;
+import com.mona.rpg.model.BaseMapImpl;
 import com.mona.rpg.model.IBaseMap;
-import com.mona.rpg.model.IDrawable;
-import com.mona.rpg.model.IRole;
-import com.mona.rpg.view.ICanvas;
-import com.mona.rpg.view.IView;
+import com.mona.rpg.view.Container;
+import com.mona.rpg.view.IScene;
 
-public abstract class ControllerImpl implements IController {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ControllerImpl implements IController {
     private IBaseMap gameMap;
-    private IView view;
-    private ICanvas canvas;
+    private static volatile IController controller;
+    private List<IBaseEvent> eventList;
+    private List<IBaseListener> listenerList;
+    private List<IScene> sceneList;
+    private Container container;
 
-    @Override
-    public IRole getRole() {
-        return null;
+    private ControllerImpl() {
+        container = new Container();
+        gameMap = BaseMapImpl.getInstance();
+        eventList = new ArrayList<>();
+    }
+
+    public static IController getInstance() {
+        synchronized (IController.class) {
+            if (controller == null) {
+                synchronized (IController.class) {
+                }
+                {
+                    controller = new ControllerImpl();
+                }
+            }
+        }
+        return controller;
     }
 
     @Override
     public void start() {
-        IDrawable drawable = gameMap.getDrawable(200, 100);
-        view.addMap(gameMap);
+        gameMap.getDrawable(200, 100);
+        container.init();
     }
 
     @Override
@@ -40,6 +58,8 @@ public abstract class ControllerImpl implements IController {
 
     @Override
     public void postEvent(IBaseEvent event) {
-
+        eventList.add(event);
+        event.run();
     }
+
 }

@@ -1,6 +1,6 @@
 package demo;
 
-import com.mona.util.ShapeUtil;
+import demo.util.ShapeUtil;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -485,7 +485,7 @@ public abstract class Box2D implements Cloneable, Shape {
         if (maxX < box2d.minX || box2d.maxX < minX || maxY < box2d.minY || box2d.maxY < minY) {
             return false;
         }
-        double otherpoints[] = box2d.points;
+        double[] otherpoints = box2d.points;
         double ax, ay, bx, by, cx, cy, dx, dy;
         double abac, abad, cdca, cdcb;
         int i, j, len2 = otherpoints.length;

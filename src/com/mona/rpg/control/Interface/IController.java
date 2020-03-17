@@ -1,4 +1,4 @@
-package com.mona.rpg.control;
+package com.mona.rpg.control.Interface;
 
 /**
  * 控制器

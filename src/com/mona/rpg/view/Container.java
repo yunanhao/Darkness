@@ -2,9 +2,10 @@ package com.mona.rpg.view;
 
 import com.mona.rpg.control.ControllerImpl;
 import com.mona.rpg.control.EventImpl;
-import com.mona.rpg.control.IController;
+import com.mona.rpg.control.Interface.IController;
 import com.mona.rpg.model.BaseMapImpl;
-import com.mona.rpg.model.IDrawable;
+import com.mona.rpg.model.Interface.IDrawable;
+import com.mona.rpg.view.Interface.ICanvas;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +16,6 @@ import java.awt.event.*;
  */
 public class Container extends JPanel implements IDrawable, MouseListener, MouseMotionListener, MouseWheelListener {
     private IController controller;
-    private IScene scene;
     private Graphics2D graphics2D;
 
     public void init() {
@@ -33,8 +33,6 @@ public class Container extends JPanel implements IDrawable, MouseListener, Mouse
 
     @Override
     public void draw(ICanvas canvas) {
-        if (scene != null)
-            canvas.draw(scene);
         if (canvas instanceof CanvasImpl) {
             ((CanvasImpl) canvas).init(graphics2D);
             canvas.draw(BaseMapImpl.getInstance().getDrawable());

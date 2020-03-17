@@ -1,6 +1,6 @@
-package com.mona.rpg.model;
+package com.mona.rpg.model.Interface;
 
-import com.mona.rpg.view.ICanvas;
+import com.mona.rpg.view.Interface.ICanvas;
 
 /**
  * 可绘制的资源对象

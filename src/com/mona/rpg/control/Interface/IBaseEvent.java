@@ -1,6 +1,6 @@
-package com.mona.rpg.control;
+package com.mona.rpg.control.Interface;
 
-import com.mona.rpg.model.IRole;
+import com.mona.rpg.model.Interface.IRole;
 
 /**
  * 事件对象

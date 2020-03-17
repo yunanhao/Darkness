@@ -1,4 +1,4 @@
-package com.mona.rpg.model;
+package com.mona.rpg.model.Interface;
 
 /**
  * 基础地图

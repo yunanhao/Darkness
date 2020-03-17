@@ -1,12 +1,16 @@
-package com.mona.rpg.view;
+package com.mona.rpg.view.Interface;
 
-import com.mona.rpg.model.IDrawable;
-import com.mona.rpg.model.IMatrix;
+import com.mona.rpg.model.Interface.IDrawable;
+import com.mona.rpg.model.Interface.IMatrix;
 
 /**
  * 执行绘制操作
  */
 public interface ICanvas extends IDrawable {
+
+    int getColor();
+
+    int setColor(int color);
 
     /**
      * 绘制矩形
@@ -27,16 +31,6 @@ public interface ICanvas extends IDrawable {
      * 绘制复杂对象
      */
     void draw(IDrawable drawable);
-
-    /**
-     * 设置画笔
-     */
-    void setPaint(IPaint paint);
-
-    /**
-     * 获取当前画笔对象
-     */
-    IPaint getPaint();
 
     void translate(float dx, float dy);
 

@@ -1,6 +1,8 @@
 package com.mona.rpg.model;
 
-import com.mona.rpg.view.ICanvas;
+import com.mona.rpg.model.Interface.IBaseMap;
+import com.mona.rpg.model.Interface.IDrawable;
+import com.mona.rpg.view.Interface.ICanvas;
 
 public class BaseMapImpl implements IBaseMap {
     private static volatile IBaseMap baseMap;
@@ -59,13 +61,13 @@ public class BaseMapImpl implements IBaseMap {
                     for (int j = 0; j < data[i].length; j++) {
                         switch (data[i][j]) {
                             case 0:
-                                canvas.getPaint().setColor(0xffff0000);
+                                canvas.setColor(0xffff0000);
                                 break;
                             case 1:
-                                canvas.getPaint().setColor(0xff00ff00);
+                                canvas.setColor(0xff00ff00);
                                 break;
                             case 2:
-                                canvas.getPaint().setColor(0xff0000ff);
+                                canvas.setColor(0xff0000ff);
                                 break;
                             default:
                         }

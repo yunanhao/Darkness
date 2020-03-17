@@ -1,6 +1,6 @@
-package com.mona.rpg.model;
+package com.mona.rpg.model.Interface;
 
-import com.mona.rpg.view.ICanvas;
+import com.mona.rpg.view.Interface.ICanvas;
 
 /**
  * 具备生命周期的角色

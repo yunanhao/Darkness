@@ -1,9 +1,11 @@
 package com.mona.rpg.control;
 
+import com.mona.rpg.control.Interface.IBaseEvent;
+import com.mona.rpg.control.Interface.IBaseListener;
+import com.mona.rpg.control.Interface.IController;
 import com.mona.rpg.model.BaseMapImpl;
-import com.mona.rpg.model.IBaseMap;
+import com.mona.rpg.model.Interface.IBaseMap;
 import com.mona.rpg.view.Container;
-import com.mona.rpg.view.IScene;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,6 @@ public class ControllerImpl implements IController {
     private IBaseMap gameMap;
     private List<IBaseEvent> eventList;
     private List<IBaseListener> listenerList;
-    private List<IScene> sceneList;
     private Container container;
 
     private ControllerImpl() {

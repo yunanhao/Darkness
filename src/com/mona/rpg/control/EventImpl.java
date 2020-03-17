@@ -1,6 +1,8 @@
 package com.mona.rpg.control;
 
-import com.mona.rpg.model.IRole;
+import com.mona.rpg.control.Interface.IBaseEvent;
+import com.mona.rpg.control.Interface.IBaseListener;
+import com.mona.rpg.model.Interface.IRole;
 
 import java.util.ArrayList;
 import java.util.HashMap;

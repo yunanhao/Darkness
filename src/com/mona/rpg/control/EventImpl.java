@@ -1,8 +1,6 @@
 package com.mona.rpg.control;
 
-import com.mona.rpg.control.Interface.IBaseEvent;
-import com.mona.rpg.control.Interface.IBaseListener;
-import com.mona.rpg.model.Interface.IRole;
+import com.mona.rpg.model.IActor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,7 +63,7 @@ public class EventImpl implements IBaseEvent {
     }
 
     @Override
-    public IRole getSource() {
+    public IActor getSource() {
         return null;
     }
 

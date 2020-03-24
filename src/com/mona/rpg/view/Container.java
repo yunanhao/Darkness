@@ -2,10 +2,7 @@ package com.mona.rpg.view;
 
 import com.mona.rpg.control.ControllerImpl;
 import com.mona.rpg.control.EventImpl;
-import com.mona.rpg.control.Interface.IController;
-import com.mona.rpg.model.BaseMapImpl;
-import com.mona.rpg.model.Interface.IDrawable;
-import com.mona.rpg.view.Interface.ICanvas;
+import com.mona.rpg.control.IController;
 
 import javax.swing.*;
 import java.awt.*;

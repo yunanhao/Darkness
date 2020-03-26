@@ -8,14 +8,12 @@ import java.util.List;
 public class ControllerImpl implements IController {
     private static volatile IController controller;
 
-    private IBaseMap gameMap;
     private List<IBaseEvent> eventList;
     private List<IBaseListener> listenerList;
     private Container container;
 
     private ControllerImpl() {
         container = new Container();
-        gameMap = BaseMapImpl.getInstance();
         eventList = new ArrayList<>();
     }
 
@@ -34,7 +32,6 @@ public class ControllerImpl implements IController {
 
     @Override
     public void start() {
-        gameMap.init();
         container.init();
         new Thread() {
             @Override

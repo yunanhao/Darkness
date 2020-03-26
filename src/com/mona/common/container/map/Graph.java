@@ -13,7 +13,7 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
         int i = 0;
         Vertex<DATA, COST> temp = firstVertex;
         while (temp != null) {
-            temp = temp.mRight;
+            temp = temp.next;
             i++;
         }
         return i;
@@ -40,7 +40,7 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
             if (data.equals(temp.mData)) {
                 return true;
             }
-            temp = temp.mRight;
+            temp = temp.next;
         }
         return false;
     }
@@ -51,7 +51,7 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
             if (data.equals(temp.mData)) {
                 return temp;
             }
-            temp = temp.mRight;
+            temp = temp.next;
         }
         return null;
     }
@@ -64,27 +64,27 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
         vertex = new Vertex<>();
         vertex.setDATA(data);
         if (firstVertex != null) {
-            firstVertex.mLeft = vertex;
-            vertex.mRight = firstVertex;
+            firstVertex.prev = vertex;
+            vertex.next = firstVertex;
         }
         firstVertex = vertex;
         return vertex;
     }
 
     public Vertex<DATA, COST> deleteVertex(DATA data) {
-        for (Vertex<DATA, COST> vertex = firstVertex; vertex != null; vertex = vertex.mRight) {
+        for (Vertex<DATA, COST> vertex = firstVertex; vertex != null; vertex = vertex.next) {
             if (data.equals(vertex.mData)) {
                 //重新连接图中节点的关系网
-                if (vertex.mLeft != null) {
-                    vertex.mLeft.mRight = vertex.mRight;
+                if (vertex.prev != null) {
+                    vertex.prev.next = vertex.next;
                 } else {
-                    firstVertex = vertex.mRight;
+                    firstVertex = vertex.next;
                 }
-                if (vertex.mRight != null) {
-                    vertex.mRight.mLeft = vertex.mLeft;
+                if (vertex.next != null) {
+                    vertex.next.prev = vertex.prev;
                 }
                 //删除被删除节点的前驱元素中可以到达当前节点的边
-                Edge<DATA, COST> edge = vertex.mFirstPrev;
+                Edge<DATA, COST> edge = vertex.prevEdge;
                 while (edge != null) {
                     if (vertex.equals(edge.mTarget)) {
                         edge.mOrigin.disconnect(vertex);
@@ -92,7 +92,7 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
                     edge = edge.mPrev;
                 }
                 //删除被删除的节点可以抵达的目标节点所持有的前驱
-                edge = vertex.mFirstNext;
+                edge = vertex.nextEdge;
                 while (edge != null) {
                     edge.mTarget.delPrev(edge);
                     edge = edge.mNext;
@@ -111,7 +111,7 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
         sb.append('"');
         sb.append(':');
         sb.append('[');
-        for (Vertex<DATA, COST> vertex = firstVertex; vertex != null; vertex = vertex.mRight) {
+        for (Vertex<DATA, COST> vertex = firstVertex; vertex != null; vertex = vertex.next) {
             sb.append('{');
             sb.append(vertex);
             sb.append('}');
@@ -137,10 +137,11 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
          */
         private int[] mLocation;
 
-        private Edge<DATA, COST> mFirstPrev;
-        private Edge<DATA, COST> mFirstNext;
-        private Vertex<DATA, COST> mLeft;
-        private Vertex<DATA, COST> mRight;
+        private Edge<DATA, COST> prevEdge;
+        private Edge<DATA, COST> nextEdge;
+
+        private Vertex<DATA, COST> prev;
+        private Vertex<DATA, COST> next;
 
         /**
          * 得到节点的数据
@@ -170,13 +171,14 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
          */
         private boolean connect(Vertex<DATA, COST> target, COST cost) {
             Edge<DATA, COST> edge = getEdge(target);
-            if (edge == null) {
-                edge = new Edge<>(this, target, cost);
+            if (edge != null) {
+                return true;
             }
-            if (mFirstNext != null) {
-                edge.mNext = mFirstNext;
+            edge = new Edge<>(this, target, cost);
+            if (nextEdge != null) {
+                edge.mNext = nextEdge;
             }
-            mFirstNext = edge;
+            nextEdge = edge;
             target.addPrev(edge);
             return true;
         }
@@ -187,13 +189,13 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
          * @param target 边
          * @return 是否操作成功
          */
-        public boolean disconnect(Vertex<DATA, COST> target) {
+        private boolean disconnect(Vertex<DATA, COST> target) {
             Edge<DATA, COST> prev = null;
-            Edge<DATA, COST> curr = mFirstNext;
+            Edge<DATA, COST> curr = nextEdge;
             while (curr != null) {
                 if (curr.getTarget() == target) {
-                    if (curr == mFirstNext) {
-                        mFirstNext = mFirstNext.mNext;
+                    if (curr == nextEdge) {
+                        nextEdge = nextEdge.mNext;
                     } else {
                         prev.mNext = curr.mNext;
                     }
@@ -209,25 +211,25 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
         /**
          * 注册前驱节点
          */
-        public void addPrev(Edge<DATA, COST> temp) {
-            if (mFirstPrev == null) {
-                mFirstPrev = temp;
+        private void addPrev(Edge<DATA, COST> temp) {
+            if (prevEdge == null) {
+                prevEdge = temp;
             } else {
-                temp.mPrev = mFirstPrev;
-                mFirstPrev = temp;
+                temp.mPrev = prevEdge;
+                prevEdge = temp;
             }
         }
 
         /**
          * 删除前驱节点
          */
-        public boolean delPrev(Edge<DATA, COST> temp) {
+        private boolean delPrev(Edge<DATA, COST> temp) {
             Edge<DATA, COST> prev = null;
-            Edge<DATA, COST> curr = mFirstPrev;
+            Edge<DATA, COST> curr = prevEdge;
             while (curr != null) {
                 if (curr == temp) {
-                    if (curr == mFirstPrev) {
-                        mFirstPrev = mFirstPrev.mPrev;
+                    if (curr == prevEdge) {
+                        prevEdge = prevEdge.mPrev;
                     } else {
                         prev.mPrev = curr.mPrev;
                     }
@@ -244,8 +246,8 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
          *
          * @return 如果不可达则返回null
          */
-        public Edge<DATA, COST> getEdge(Vertex<DATA, COST> target) {
-            for (Edge<DATA, COST> next = mFirstNext; next != null; next = next.mNext) {
+        private Edge<DATA, COST> getEdge(Vertex<DATA, COST> target) {
+            for (Edge<DATA, COST> next = nextEdge; next != null; next = next.mNext) {
                 if (next.getTarget() == target) {
                     return next;
                 }
@@ -266,7 +268,7 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
             sb.append('"');
             sb.append(':');
             sb.append('[');
-            Edge<DATA, COST> next = mFirstPrev;
+            Edge<DATA, COST> next = prevEdge;
             while (next != null) {
                 sb.append('"');
                 sb.append(next.mOrigin.mData);
@@ -284,7 +286,7 @@ public class Graph<DATA, COST extends Comparable<? super COST>> {
             sb.append('"');
             sb.append(':');
             sb.append('[');
-            next = mFirstNext;
+            next = nextEdge;
             while (next != null) {
                 sb.append('"');
                 sb.append(next.mTarget.mData);

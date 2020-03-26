@@ -1,11 +1,14 @@
 package demo.util;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 public final class ImageFactory {
@@ -368,8 +371,9 @@ public final class ImageFactory {
      * 测试验证码窗体的入口
      */
     public static void main(final String[] args) {
-        final ImageFactory imageFactory = ImageFactory.getInstance();
-        ImageFactory.getFrame(imageFactory).setVisible(true);
+//        final ImageFactory imageFactory = ImageFactory.getInstance();
+//        ImageFactory.getFrame(imageFactory).setVisible(true);
+        create(0xc8c8a9, 0xfc9d9a, 0xf9cdad, 32, 1, 5);
     }
 
     /**
@@ -414,6 +418,37 @@ public final class ImageFactory {
                     RANDOM.nextInt(IMAGE_HEIGHT));
         }
         return CHAR_IMAGE;
+    }
+
+    /**
+     * 制作三色自动地形
+     */
+    public static void create(int first_color, int second_color, int third_color, int tile_size, int outside_margin, int inside_margin) {
+        BufferedImage bufferedImage = new BufferedImage(tile_size * 5, tile_size * 5, BufferedImage.TYPE_4BYTE_ABGR);
+        int size_first = tile_size * 3;
+        int size_second = size_first - outside_margin - outside_margin;
+        int size_third = size_second - inside_margin - inside_margin;
+        Graphics graphics = bufferedImage.getGraphics();
+        graphics.setColor(new Color(first_color));
+        graphics.fillRect(0, 0, size_first, size_first);
+        graphics.setColor(new Color(second_color));
+        graphics.fillRect(outside_margin, outside_margin, size_second, size_second);
+        graphics.setColor(new Color(third_color));
+        graphics.fillRect(outside_margin + inside_margin, outside_margin + inside_margin, size_third, size_third);
+        //----
+        graphics.fillRect(0, size_first, tile_size << 1, tile_size << 1);
+        size_second = outside_margin + inside_margin;
+        graphics.setColor(new Color(second_color));
+        graphics.fillRect(tile_size - size_second, size_first + tile_size - size_second, size_second << 1, size_second << 1);
+        graphics.setColor(new Color(first_color));
+        graphics.fillRect(tile_size - outside_margin, size_first + tile_size - outside_margin, outside_margin << 1, outside_margin << 1);
+        graphics.fillRect(tile_size << 1, tile_size * 3, tile_size, tile_size);
+        graphics.dispose();
+        try {
+            ImageIO.write(bufferedImage, "PNG", new File("测试图.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static final class Instance {

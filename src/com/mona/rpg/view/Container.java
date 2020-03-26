@@ -11,7 +11,7 @@ import java.awt.event.*;
 /**
  * 整个工程的容器
  */
-public class Container extends JPanel implements IDrawable, MouseListener, MouseMotionListener, MouseWheelListener {
+public class Container extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener {
     private IController controller;
     private Graphics2D graphics2D;
 
@@ -29,19 +29,9 @@ public class Container extends JPanel implements IDrawable, MouseListener, Mouse
     }
 
     @Override
-    public void draw(ICanvas canvas) {
-        if (canvas instanceof CanvasImpl) {
-            ((CanvasImpl) canvas).init(graphics2D);
-            canvas.draw(BaseMapImpl.getInstance().getDrawable());
-        }
-        graphics2D.fillRect(0, 0, 20, 30);
-    }
-
-    @Override
     public void paint(Graphics g) {
         g.setColor(Color.black);
         graphics2D = (Graphics2D) g;
-        draw(CanvasImpl.getInstance());
     }
 
     @Override
